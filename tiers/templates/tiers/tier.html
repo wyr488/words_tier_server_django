@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="UTF-8">
+    <title>JavaScript word tier</title>
+		{% load static %}
+		<link rel="stylesheet" type="text/css" href="{% static 'tiers/style.css' %}">
+		<script type="text/javascript">
+		var ind=0;
+		var word_id;
+		var one=1;
+		document.addEventListener('keydown', (event) => {
+			if ((event.code === 'Space') || (event.keyCode == '39')) {
+				window.location = ('{% url 'tiers:tier' lev %}');
+			}
+		})
+
+		function u1() {
+			window.location = ('{% url 'tiers:tierM' word_gen_list.0.id -1 %}');
+		}
+		function u2() {
+			window.location = ('{% url 'tiers:tierM' word_gen_list.0.id -2 %}');
+		}
+		function d1() {
+			window.location = ('{% url 'tiers:tierM' word_gen_list.0.id 1 %}');
+		}
+		function d2() {
+			window.location = ('{% url 'tiers:tierM' word_gen_list.0.id 2 %}');
+		}
+		function nc() {
+			window.location = ('{% url 'tiers:tier' lev %}');
+		}
+		function un() {
+			window.location = ('{% url 'tiers:tierM' undo_id undo_num %}');
+		}
+		</script>
+  </head>
+
+  <body>
+
+		<div id="wrapper1">
+			<form class="standard" id="tier_word" action="{% url 'tiers:tier_submit'   %}" method="get">
+				{% csrf_token %}
+				<label >Standardized words from Tier: <input type="number" name='level' size="2" value={{lev}} ></label>
+				<input type="submit">
+			</form>
+			{% if word_sta_list %}
+				<h4 class="word1">
+				{% for word in word_sta_list %}
+					<!-- {% if forloop.counter0|divisibleby:4 %} 
+						<br>
+					{% endif %} -->
+					<span>{{ word.word_text }}    </span>
+				{% endfor %}
+				</h4>
+			{% else %}
+				<h4 class="word1">No words are available.</h4>
+			{% endif %}
+		</div>
+		<div class="wrapper2" >
+			<h1 class="words2" id="w_g">{{word_gen_list.0}}</h1>
+			<input type="button" id="ud" value="Undo" onclick="un()">
+			<input type="button" id="d1" value="Down 1 Tier" onclick="d1()">
+			<input type="button" id="d2" value="Down 2 Tier" onclick="d2()">
+			<input type="button" id="u1" value="Up 1 Tier" onclick="u1()">
+			<input type="button" id="u2" value="Up 2 Tier" onclick="u2()">
+			<input type="button" id="nc" value="No change" onclick="nc()">
+			<input type="button" id="un" value="Unleanable" onclick="alert('hello world!')">
+			
+		</div>
+		
+  </body>
+</html>
